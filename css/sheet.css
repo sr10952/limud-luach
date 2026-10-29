@@ -1,0 +1,135 @@
+/* =====================================================================
+   SHEET — the printed poster.
+   Editorial layout: one serif (Frank Ruhl Libre) for content, one sans
+   (Heebo) for labels; hairline rules, a thick/thin masthead rule, one
+   accent colour. All sizes are px on a 1300px long side; the page is
+   scaled to paper size when printing.
+   ===================================================================== */
+.sheet{
+  --paper:#fbf9f4; --ink:#1b1915; --mut:#6e675b; --acc:#8c5a1f; --hair:#d3cbbb; --rule:#1b1915; --tint:#f3eee3;
+  --serif:'Frank Ruhl Libre','David Libre','David','Times New Roman',serif;
+  --sans:'Heebo','Assistant','Segoe UI',Arial,sans-serif;
+  position:relative;display:flex;flex-direction:column;overflow:hidden;direction:rtl;
+  background:var(--paper);color:var(--ink);font-family:var(--serif);
+  padding:44px 54px 34px;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  font-feature-settings:"kern" 1;text-rendering:optimizeLegibility;
+  box-shadow:0 1px 2px rgba(0,0,0,.06),0 18px 50px rgba(0,0,0,.16);
+}
+.sheet[data-theme=blue] {--paper:#fbfcfd;--ink:#0f1f38;--mut:#5b6a82;--acc:#215394;--hair:#c9d3e1;--rule:#0f1f38;--tint:#eef2f8}
+.sheet[data-theme=green]{--paper:#fbfcf8;--ink:#17271c;--mut:#5f6f5f;--acc:#3b6530;--hair:#cdd7c4;--rule:#17271c;--tint:#eff3ea}
+.sheet[data-theme=mono] {--paper:#ffffff;--ink:#000;--mut:#4d4d4d;--acc:#000;--hair:#bcbcbc;--rule:#000;--tint:#f0f0f0}
+
+/* small caps-like label style used throughout */
+.lbl{font-family:var(--sans);font-weight:600;letter-spacing:.06em;color:var(--mut)}
+
+/* ---- masthead ---- */
+.mh{flex:none;text-align:center}
+.mh-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:16px;font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--mut)}
+.mh-top .r{text-align:start}
+.mh-top .l{text-align:end;direction:rtl}
+.mh-shul{font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:.04em;color:var(--ink)}
+.mh-title{margin:6px 0 0;font-weight:900;font-size:64px;line-height:1;letter-spacing:-.01em;color:var(--ink)}
+.mh-sub{margin-top:8px;font-weight:500;font-size:25px;line-height:1.15;color:var(--acc)}
+.mh-rule{margin-top:14px;height:6px;border-top:2.5px solid var(--rule);border-bottom:.75px solid var(--rule)}
+
+.sh-body{flex:1;min-height:0;display:flex;flex-direction:column;margin-top:16px}
+
+/* ---- footer line ---- */
+.sf{flex:none;margin-top:12px;padding-top:7px;border-top:.75px solid var(--rule);text-align:center;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.05em;color:var(--mut)}
+
+/* =========================== MONTH =========================== */
+.mo{flex:1;min-height:0;display:flex;flex-direction:column}
+.mo-head{flex:none;display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1.5px solid var(--rule)}
+.mo-head div{padding:0 9px 6px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--ink)}
+.mo-head div:last-child{color:var(--acc)}
+.mo-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1.5px solid var(--rule)}
+.c{position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;
+   padding:calc(var(--f)*.55) calc(var(--f)*.75) calc(var(--f)*.45);font-size:var(--f);line-height:1.2;
+   border-top:.75px solid var(--hair);border-inline-start:.75px solid var(--hair)}
+.mo-grid .c:nth-child(7n+1){border-inline-start:0}
+.mo-grid .c:nth-child(-n+7){border-top:0}
+.c.sh{background:var(--tint)}
+.c.yt{background:var(--tint)}
+.c.off{background:transparent}
+.c-h{display:flex;justify-content:space-between;align-items:baseline;gap:4px}
+.c-d{font-weight:900;font-size:2.35em;line-height:.9;color:var(--ink)}
+.c-g{font-family:var(--sans);font-size:.86em;font-weight:500;color:var(--mut);white-space:nowrap}
+.c-hl{margin-top:.3em;font-family:var(--sans);font-weight:700;font-size:.9em;line-height:1.15;color:var(--acc)}
+.c-pr{margin-top:.2em;font-weight:700;font-size:1.18em;line-height:1.1}
+.c-zm{display:flex;flex-wrap:wrap;gap:0 .7em;margin-top:.25em;font-family:var(--sans);font-size:.88em;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.c-zm span i{font-style:normal;font-weight:500;color:var(--mut);margin-inline-end:.3em}
+/* a small table (not CSS grid): the PDF/image renderer mirrors RTL grids */
+.c-it{margin-top:auto;padding-top:.35em;width:100%;border-collapse:collapse;font-size:1em}
+.c-it th,.c-it td{padding:0 0 .08em;vertical-align:baseline;text-align:start}
+.c-it th{width:1%;padding-inline-end:.55em;font-family:var(--sans);font-size:.74em;font-weight:600;letter-spacing:.04em;color:var(--mut);white-space:nowrap}
+.c-it td{font-weight:600}
+.c-it td.rv{font-family:var(--sans);font-weight:400;font-size:.84em;color:var(--mut)}
+.c-it td.dim{color:var(--mut);font-weight:400}
+
+/* =========================== WEEK (matrix: limudim × days) =========================== */
+.wt{--s:1;width:100%;height:100%;border-collapse:collapse;table-layout:fixed;font-size:calc(18px*var(--s));line-height:1.2}
+.wt col.lc{width:13.5%}
+.wt th,.wt td{padding:calc(7px*var(--s)) calc(9px*var(--s));vertical-align:middle;text-align:start}
+.wt thead th{vertical-align:bottom}
+.wt .dn th{padding-top:0;padding-bottom:calc(5px*var(--s));font-family:var(--sans);font-size:.72em;font-weight:700;letter-spacing:.05em;color:var(--ink);white-space:nowrap}
+.wt .dn th.sh{color:var(--acc)}
+.wt .dd th{border-top:.75px solid var(--hair);padding-top:calc(8px*var(--s));padding-bottom:calc(9px*var(--s));font-weight:400;vertical-align:top}
+.wt .dd th b{display:block;font-weight:900;font-size:2.6em;line-height:.9;margin-bottom:.12em}
+.wt .dd th span{display:block;margin-top:.15em;font-family:var(--sans);font-size:.7em;font-weight:500;color:var(--mut);white-space:nowrap}
+.wt .dd th em{display:block;margin-top:.3em;font-style:normal;font-family:var(--sans);font-size:.72em;font-weight:700;line-height:1.15;color:var(--acc)}
+.wt .dd th strong{display:block;margin-top:.25em;font-size:.95em;font-weight:700}
+.wt thead tr:last-child th{border-bottom:1.5px solid var(--rule)}
+.wt tbody th{font-family:var(--sans);font-size:.74em;font-weight:700;letter-spacing:.03em;line-height:1.2;color:var(--ink);border-inline-end:.75px solid var(--hair)}
+.wt tbody td{font-weight:600;border-top:.75px solid var(--hair)}
+.wt tbody tr:first-child td,.wt tbody tr:first-child th{border-top:0}
+.wt tbody tr+tr th{border-top:.75px solid var(--hair)}
+/* review sub-rows sit under their limud, without a rule between them */
+.wt tbody tr.sub th{border-top:0!important;padding-top:0;font-weight:500;font-size:.62em;color:var(--mut);padding-inline-start:calc(14px*var(--s))}
+.wt tbody tr.sub td{border-top:0;padding-top:0;font-family:var(--sans);font-size:.74em;font-weight:400;color:var(--mut)}
+.wt tr.zt td{white-space:nowrap}
+.wt td .rv{display:block;margin-top:.2em;font-family:var(--sans);font-size:.7em;font-weight:400;color:var(--mut)}
+.wt td .tag{display:block;font-family:var(--sans);font-size:.62em;font-weight:700;letter-spacing:.08em;color:var(--acc)}
+.wt td.dim{color:var(--mut);font-weight:400}
+.wt .sh{background:var(--tint)}
+.wt .yt{background:var(--tint)}
+.wt tr.zt td,.wt tr.zt th{font-family:var(--sans);font-size:.78em;font-weight:600;font-variant-numeric:tabular-nums}
+.wt tr.zt th{color:var(--mut);font-weight:600}
+.wt tr.zfirst td,.wt tr.zfirst th{border-top:1.5px solid var(--rule)}
+.wt tbody tr:last-child td,.wt tbody tr:last-child th{border-bottom:1.5px solid var(--rule)}
+
+/* =========================== DAY =========================== */
+.dv{--ds:1;flex:1;min-height:0;display:flex;flex-direction:column}
+.dv-hero{flex:none;text-align:center;padding:calc(8px*var(--ds)) 0 calc(20px*var(--ds));border-bottom:1.5px solid var(--rule)}
+.dv-w{font-family:var(--sans);font-size:calc(18px*var(--ds));font-weight:700;letter-spacing:.14em;color:var(--acc)}
+.dv-d{margin-top:calc(6px*var(--ds));font-weight:900;font-size:calc(104px*var(--ds));line-height:.95}
+.dv-y{margin-top:calc(10px*var(--ds));font-family:var(--sans);font-size:calc(18px*var(--ds));font-weight:500;color:var(--mut)}
+.dv-tags{margin-top:calc(10px*var(--ds));font-family:var(--sans);font-size:calc(19px*var(--ds));font-weight:700;color:var(--acc)}
+.dv-t{flex:1;width:100%;border-collapse:collapse}
+.dv-t th,.dv-t td{border-bottom:.75px solid var(--hair);padding:calc(12px*var(--ds)) 6px;vertical-align:baseline;text-align:start}
+.dv-t th{width:30%;font-family:var(--sans);font-size:calc(17px*var(--ds));font-weight:700;letter-spacing:.04em;color:var(--mut)}
+.dv-t td b{display:block;font-weight:700;font-size:calc(40px*var(--ds));line-height:1.1}
+.dv-t td .rv{display:block;margin-top:calc(4px*var(--ds));font-family:var(--sans);font-size:calc(18px*var(--ds));font-weight:400;color:var(--mut)}
+.dv-t td.dim b{color:var(--mut);font-weight:400}
+.dv-zm{flex:none;display:flex;justify-content:center;gap:calc(42px*var(--ds));padding-top:calc(14px*var(--ds));border-top:1.5px solid var(--rule);font-family:var(--sans)}
+.dv-zm div{text-align:center}
+.dv-zm span{display:block;font-size:calc(14px*var(--ds));font-weight:600;letter-spacing:.08em;color:var(--mut)}
+.dv-zm b{display:block;font-size:calc(30px*var(--ds));font-weight:600;font-variant-numeric:tabular-nums}
+
+/* =========================== TESTS =========================== */
+.tt{--ts:1;width:100%;border-collapse:collapse;font-size:calc(20px*var(--ts));line-height:1.25}
+.tt th{padding:0 10px calc(7px*var(--ts));border-bottom:1.5px solid var(--rule);text-align:start;font-family:var(--sans);font-size:.66em;font-weight:700;letter-spacing:.1em}
+.tt td{padding:calc(11px*var(--ts)) 10px;border-bottom:.75px solid var(--hair);vertical-align:baseline}
+.tt tr.g td{border-top:1.5px solid var(--rule)}
+.tt tbody tr:first-child td{border-top:0}
+.tt .td{width:26%;border-inline-end:.75px solid var(--hair);vertical-align:top}
+.tt .td b{display:block;font-weight:900;font-size:1.12em}
+.tt .td span{display:block;margin-top:.2em;font-family:var(--sans);font-size:.68em;font-weight:500;color:var(--mut)}
+.tt .tn{width:24%;font-family:var(--sans);font-size:.8em;font-weight:700;color:var(--acc)}
+.tt .tm{font-weight:600}
+.tt-none{margin-top:80px;text-align:center;font-family:var(--sans);font-size:20px;color:var(--mut)}
+
+/* the day a new שער starts */
+.wt td .mk{display:block;font-weight:900;font-size:1.15em;line-height:1.1;margin-bottom:.15em}
+.c-it td.mk{font-weight:900;font-size:1.25em;padding-top:.2em}
+.dv-t td .mk{display:block;font-weight:900;font-size:calc(46px*var(--ds));line-height:1.05;margin-bottom:calc(4px*var(--ds))}

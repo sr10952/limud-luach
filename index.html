@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="yi" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>לימוד־לוח · מאך דיר א לימוד־לוח צום דרוקן</title>
+<meta name="description" content="מאך דיר א שיינעם לימוד־לוח: דף היומי, עמוד היומי, משנה ברורה, רמב״ם, ירושלמי יומי, תהילים, שנים מקרא און דיינע אייגענע לימודים — צום דרוקן אדער אפהיטן אלס בילד.">
+<meta name="theme-color" content="#f3f1ec">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/sheet.css">
+<link rel="stylesheet" href="css/sheet-classic.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./" aria-label="לימוד־לוח"><b>לימוד־לוח</b><small>א לוח צום אויפהענגען אין בית המדרש</small></a>
+  <span class="sp"></span>
+  <span class="bh">בס״ד</span>
+  <button class="ghost" id="btnHelp" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3.9 2.2c-.9.5-1.4 1-1.4 2"/><circle cx="12" cy="16.8" r=".6" fill="currentColor"/></svg>ווי אזוי?</button>
+</div></header>
+
+<div class="netw" id="netw" role="alert"><div class="wrap"><div id="netwBody"></div><button class="x" type="button" aria-label="צומאכן" onclick="this.closest('.netw').classList.remove('on')">×</button></div></div>
+
+<section class="hero"><div class="wrap">
+  <span class="eyebrow">לימוד־לוח · צום דרוקן און אויפהענגען</span>
+  <h1>דער לימוד־לוח פאר׳ן <em>בית המדרש</em></h1>
+  <p>קלייב אויס וואס מען לערנט, די תקופה און דעם דאטום — דער לוח שטעלט זיך אויף אליין, מיט די זמנים. דרוק אים אויס פון 8½×11 ביז א גרויסן פלאקאט, אדער היט אים אפ אלס PDF אדער בילד.</p>
+  <div class="rule"></div>
+</div></section>
+
+<main class="wrap app">
+  <aside class="panel" aria-label="ברירות">
+
+    <section class="card" id="c1">
+      <h2><span class="num">01</span>וועלכע תקופה?</h2>
+      <p class="sub">איין טאג, א גאנצע וואך, אדער א גאנצער חודש.</p>
+      <div class="seg" id="segView" role="group" aria-label="תקופה">
+        <button type="button" data-v="day" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg><b>טעגליך</b><span>איין טאג</span></button>
+        <button type="button" data-v="week" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="2.5"/><path d="M3 10h18M8.5 10v10M13 10v10M17.2 10v10"/></svg><b>וועכנטליך</b><span>א וואך</span></button>
+        <button type="button" data-v="month" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.8v3.4M16 2.8v3.4M8 13.5h.01M12 13.5h.01M16 13.5h.01M8 17h.01M12 17h.01M16 17h.01"/></svg><b>חודשליך</b><span>א חודש</span></button>
+        <button type="button" data-v="tests" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6M9 3h6v3H9z"/><rect x="5" y="4.5" width="14" height="16.5" rx="2.5"/><path d="M8.5 11l1.5 1.5 3-3M8.5 16.5h7"/></svg><b>מבחנים</b><span>א בלאט</span></button>
+      </div>
+      <label class="f" for="inDate">דאטום</label>
+      <input class="in" type="date" id="inDate">
+      <div class="hdate"><span id="hdLabel"></span><small id="hdNote"></small></div>
+      <div class="nav">
+        <button class="btn" type="button" id="navPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><span id="lblPrev">פריערדיגער</span></button>
+        <button class="btn" type="button" id="navToday">היינט</button>
+        <button class="btn" type="button" id="navNext"><span id="lblNext">קומענדיגער</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      </div>
+      <label class="f" for="inPages" id="lblPages">וויפיל וואכן צו דרוקן אין איין PDF</label>
+      <input class="in" id="inPages" type="number" min="1" max="52" value="1">
+      <p class="note" style="margin-top:6px">יעדע וואך / חודש / טאג קומט אויף א באזונדער בלאט, אנגעהויבן פון דעם דאטום אויבן. ביי מער ווי איינס מאכט „דרוק / PDF“ א PDF פייל — עפן אים און דרוק.</p>
+    </section>
+
+    <section class="card" id="c2">
+      <h2><span class="num">02</span>וואס לערנט מען?</h2>
+      <p class="sub">מאך א צייכן ביי וואס דו ווילסט האבן אין לוח.</p>
+      <div class="lim" id="limStd"></div>
+      <p class="note" style="margin:8px 0 0">מיט ▲▼ שטעלט מען אויס די סדר — אזוי ווי עס שטייט דא, אזוי קומט עס אויפן לוח.</p>
+      <div class="sechd"><span>אן אייגענער לימוד</span><button class="btn sm gold" type="button" id="btnAdd">+ צולייגן</button></div>
+      <div class="lim" id="limCus"></div>
+      <p class="note" id="cusEmpty">נאך נישט צוגעלייגט. פאר משניות, מוסר, חומש, א סדר פון א ליסטע — אדער א שטענדיגע שורה ווי "שיעור ביי נאכט".</p>
+    </section>
+
+    <section class="card" id="c3">
+      <h2><span class="num">03</span>אויסזען</h2>
+      <p class="sub">שול, טיטל, קאליר און גרייס פון פלאקאט.</p>
+      <label class="f" for="inShul">נאמען פון שול <span style="font-weight:400;color:var(--muted)">(אפציאנאל)</span></label>
+      <input class="in" id="inShul" maxlength="50" placeholder="למשל: בית מדרש ___">
+      <label class="f" for="inTitle">טיטל</label>
+      <input class="in" id="inTitle" maxlength="50" placeholder="לימוד־לוח">
+      <label class="f" for="inSub">אונטער־טיטל <span style="font-weight:400;color:var(--muted)">(לייג ליידיג פאר אויטאמאטיש)</span></label>
+      <input class="in" id="inSub" maxlength="80" placeholder="">
+      <label class="f" for="inStyle">סטיל</label>
+      <select class="in" id="inStyle"><option value="classic">קלאסיש — מיט א ראם און קאלירן</option><option value="modern">מאדערן — ריין, שווארץ־ווייס ליניעס</option></select>
+      <label class="f">קאליר־סכמע</label>
+      <div class="swatches" id="swTheme">
+        <button type="button" class="sw" data-t="parchment" aria-pressed="false"><i style="background:linear-gradient(90deg,#fbf9f4 55%,#8c5a1f 55%)"></i>פארמעט</button>
+        <button type="button" class="sw" data-t="blue" aria-pressed="false"><i style="background:linear-gradient(90deg,#fbfcfd 55%,#215394 55%)"></i>בלוי</button>
+        <button type="button" class="sw" data-t="green" aria-pressed="false"><i style="background:linear-gradient(90deg,#fbfcf8 55%,#3b6530 55%)"></i>גרין</button>
+        <button type="button" class="sw" data-t="mono" aria-pressed="false"><i style="background:linear-gradient(90deg,#fff 55%,#000 55%)"></i>שווארץ־ווייס</button>
+      </div>
+      <div class="two">
+        <div><label class="f" for="inPaper">גרייס פון פלאקאט</label>
+          <select class="in" id="inPaper"><option value="tab">11×17 (טאבלאיד)</option><option value="letter">לעטער 8.5×11</option><option value="a4">A4</option><option value="a3">A3</option><option value="p18">18×24</option><option value="p24">24×36</option></select></div>
+        <div><label class="f" for="inOrient">ריכטונג</label>
+          <select class="in" id="inOrient"><option value="auto">אויטאמאטיש</option><option value="landscape">ליגנדיג</option><option value="portrait">שטייענדיג</option></select></div>
+      </div>
+      <label class="f" for="inFoot">שורה אונטן <span style="font-weight:400;color:var(--muted)">(אפציאנאל, למשל א הקדשה)</span></label>
+      <input class="in" id="inFoot" maxlength="90" placeholder="בעזרת השם · יעדן טאג א ביסל מער">
+      <div style="margin-top:8px">
+        <label class="tg"><span>ווייז דעם אמעריקאנער דאטום</span><input type="checkbox" id="tgGreg"><span class="sw2"></span></label>
+        <label class="tg"><span>ווייז יום טובים, פאסטן און ראשי חדשים</span><input type="checkbox" id="tgHol"><span class="sw2"></span></label>
+        <label class="tg"><span>ווייז זמנים (הדלקת נרות · מוצאי שבת)</span><input type="checkbox" id="tgZman"><span class="sw2"></span></label>
+        <label class="tg"><span>ווייז נץ החמה יעדן טאג</span><input type="checkbox" id="tgNetz"><span class="sw2"></span></label>
+        <label class="tg"><span>ווייז שקיעה יעדן טאג</span><input type="checkbox" id="tgShk"><span class="sw2"></span></label>
+      </div>
+      <div id="zmBox">
+        <div class="two">
+          <div><label class="f" for="inCm">הדלקת נרות — מינוט פאר שקיעה</label><input class="in" id="inCm" type="number" min="0" max="90" value="30"></div>
+          <div><label class="f" for="inHm">מוצאי שבת — מינוט נאך שקיעה</label><input class="in" id="inHm" type="number" min="0" max="120" value="56"></div>
+        </div>
+        <label class="f" for="inZip">פאסט־קאד (ארה״ב)</label>
+        <input class="in" id="inZip" inputmode="numeric" maxlength="5" value="10952">
+        <p class="note" id="zmNote">די זמנים קומען פון Hebcal לויט דעם פאסט־קאד.</p>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn danger sm" type="button" id="btnReset">ווידער פון אנהייב</button></div>
+    </section>
+    <section class="card" id="c4">
+      <h2><span class="num">04</span>מבחנים</h2>
+      <p class="sub">די מבחנים קומען אויף א באזונדער בלאט — קלייב „מבחנים“ אין 01. ביי עמוד היומי און משנה ברורה רעכנט זיך דער חומר אליין אויס, פון דעם „חומר פון“ דאטום ביז פאר׳ן מבחן.</p>
+      <div id="tstList"></div>
+      <button class="btn sm gold" type="button" id="btnTest">+ א מבחן</button>
+    </section>
+  </aside>
+
+  <section class="stage-col" aria-label="פארשוי">
+    <div class="toolbar">
+      <button class="btn pri" type="button" id="btnPrint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.5h10V9M7 17.5H4.5V10.5h15v7H17M7 14.5h10v6H7z"/></svg>דרוק / PDF</button>
+      <button class="btn" type="button" id="btnPng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>היט אפ אלס בילד</button>
+      <button class="btn" type="button" id="btnLink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>קאפיר לינק</button>
+      <span class="sp"></span>
+    </div>
+    <div class="stage" id="stage"><div class="stage-wrap" id="stageWrap"><div class="stage-inner" id="stageInner"></div></div></div>
+    <p class="hint" id="hint">קוק איבער אלעס איידער דו דרוקסט — דפים, זמנים און דאטומס. דער טאג ענדערט זיך ביי האלבע נאכט, נישט ביי שקיעה.</p>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap"><b>בעזרת השם</b> · יעדן טאג א ביסל מער</div></footer>
+
+<div class="mbar"><button class="btn pri" type="button" id="mPrint">דרוק / PDF</button><button class="btn" type="button" id="mPng">בילד</button></div>
+
+<dialog id="dlgItem"><form method="dialog" class="dlg" id="frmItem">
+  <h3 id="dlgTitle">א נייער לימוד</h3>
+  <p class="note" style="margin:0 0 4px">דער לימוד ווערט אריינגעלייגט אין לוח אויף יעדן טאג וואס פאסט.</p>
+  <label class="f" for="fName">נאמען</label>
+  <input class="in" id="fName" maxlength="40" placeholder="למשל: משנה ברורה · מוסר · חומש">
+  <label class="f" for="fAbbr">קורצער נאמען <span style="font-weight:400;color:var(--muted)">(פאר די קלייניע קעסטלעך, אפציאנאל)</span></label>
+  <input class="in" id="fAbbr" maxlength="12" placeholder="למשל: מאמר">
+  <label class="f" for="fType">וואס פאר א סארט?</label>
+  <select class="in" id="fType">
+    <option value="num">נומערן — א צאל וואס גייט ארויף יעדן טאג</option>
+    <option value="list">ליסטע — איין שורה פאר יעדן טאג</option>
+    <option value="fix">שטענדיג — א געוויסער טעקסט אויף געוויסע טעג</option>
+    <option value="amud">עמוד גמרא — א עמוד א טאג, מיט חזרה</option>
+    <option value="mish">משנה — א משנה א טאג</option>
+  </select>
+  <div id="fNum">
+    <div class="two">
+      <div><label class="f" for="fFrom">אנהייב־נומער</label><input class="in" id="fFrom" type="number" min="1" value="1"></div>
+      <div><label class="f" for="fPer">יעדן טאג</label><input class="in" id="fPer" type="number" min="1" value="1"></div>
+      <div><label class="f" for="fUnit">איינהייט <span style="font-weight:400;color:var(--muted)">(אפציאנאל)</span></label><input class="in" id="fUnit" maxlength="14" placeholder="סימן · פרק · משנה"></div>
+      <div><label class="f" for="fMax">ביז וואס <span style="font-weight:400;color:var(--muted)">(דעמאלט הייבט מען ווידער אן)</span></label><input class="in" id="fMax" type="number" min="1" placeholder="אפציאנאל"></div>
+    </div>
+    <label class="tg" style="margin-top:6px"><span>ווייז נומערן מיט אותיות (א׳ ב׳ ג׳)</span><input type="checkbox" id="fLetters"><span class="sw2"></span></label>
+    <label class="f" for="fMarks">נייע שערים / חלקים <span style="font-weight:400;color:var(--muted)">(אפציאנאל — ווערט געשריבן גרויס אויף יענעם טאג)</span></label>
+    <textarea class="in" id="fMarks" style="min-height:70px" placeholder="2026-10-29 שער התשובה&#10;260 שער חשבון הנפש"></textarea>
+    <p class="note">יעדע שורה: א דאטום (יאר-חודש-טאג) אדער א שיעור־נומער, און דערנאך דער נאמען.</p>
+  </div>
+  <div id="fList" hidden>
+    <label class="f" for="fLines">די ליסטע — איין שורה פאר יעדן טאג</label>
+    <textarea class="in" id="fLines" placeholder="פרק א&#10;פרק ב&#10;פרק ג"></textarea>
+    <label class="tg"><span>ווען די ליסטע ענדיגט זיך, הייב ווידער אן</span><input type="checkbox" id="fCycle" checked><span class="sw2"></span></label>
+  </div>
+  <div id="fFix" hidden>
+    <label class="f" for="fText">דער טעקסט</label>
+    <input class="in" id="fText" maxlength="50" placeholder="למשל: שיעור ביי נאכט">
+    <label class="f">אויף וועלכע טעג?</label>
+    <div class="chips" id="fDays"></div>
+  </div>
+  <div id="fAmud" hidden>
+    <div class="two">
+      <div><label class="f" for="fAm">מסכת</label><select class="in" id="fAm"></select></div>
+      <div><label class="f" for="fAd">דף</label><input class="in" id="fAd" type="number" min="2" value="2"></div>
+      <div><label class="f" for="fAs">עמוד</label><select class="in" id="fAs"><option value="a">א</option><option value="b">ב</option></select></div>
+    </div>
+    <label class="tg"><span>חזרה (נעכטיגע עמוד / וואך־חזרה פרייטאג און שבת)</span><input type="checkbox" id="fRev" checked><span class="sw2"></span></label>
+    <label class="tg"><span>חזרת החודש (א עמוד א טאג, זונטאג ביז דאנערשטאג)</span><input type="checkbox" id="fMr"><span class="sw2"></span></label>
+    <div class="two" id="fMrBox" hidden>
+      <div><label class="f" for="fMrm">חזרת החודש — מסכת</label><select class="in" id="fMrm"></select></div>
+      <div><label class="f" for="fMrd">דף</label><input class="in" id="fMrd" type="number" min="2" value="2"></div>
+      <div><label class="f" for="fMrs">עמוד</label><select class="in" id="fMrs"><option value="a">א</option><option value="b">ב</option></select></div>
+      <div><label class="f" for="fMrStart">אויף דעם דאטום</label><input class="in" id="fMrStart" type="date"></div>
+    </div>
+    <p class="note">די עמוד־נומער איז אויף דעם דאטום אונטן. מען לערנט נייע עמודים זונטאג ביז דאנערשטאג; פרייטאג און שבת איז חזרה אויף די עמודים פון דער וואך.</p>
+  </div>
+  <div id="fMish" hidden>
+    <div class="two">
+      <div><label class="f" for="fMm">מסכת</label><select class="in" id="fMm"></select></div>
+      <div><label class="f" for="fMc">פרק</label><input class="in" id="fMc" type="number" min="1" value="1"></div>
+      <div><label class="f" for="fMi">משנה</label><input class="in" id="fMi" type="number" min="1" value="1"></div>
+    </div>
+    <p class="note">די משנה איז אויף דעם דאטום אונטן. מען גייט ווייטער לויט סדר הש״ס, און הייבט ווידער אן נאך עוקצים.</p>
+  </div>
+  <div id="fStartWrap">
+    <label class="f" for="fStart">דאטום <span style="font-weight:400;color:var(--muted)">(דער אנהייב־פונקט אויבן איז אויף דעם טאג)</span></label>
+    <input class="in" id="fStart" type="date">
+    <label class="tg" id="lblSkipSh" style="margin-top:6px"><span>נישט אויף שבת</span><input type="checkbox" id="fSkipSh"><span class="sw2"></span></label>
+    <label class="tg"><span>נישט אויף יום טוב</span><input type="checkbox" id="fSkipYT"><span class="sw2"></span></label>
+  </div>
+  <div class="acts"><button class="btn pri" type="submit" value="ok" id="fOk">שפיכער</button><button class="btn" type="button" id="fCancel">אפבאטלען</button></div>
+</form></dialog>
+
+<dialog id="dlgHelp"><div class="dlg">
+  <h3>ווי אזוי ניצט מען דאס?</h3>
+  <ol>
+    <li><b>קלייב די תקופה</b> — א טאג, א וואך, אדער א גאנצן חודש — און דעם דאטום.</li>
+    <li><b>מאך א צייכן</b> ביי די לימודים. דף היומי, עמוד היומי, משנה ברורה, רמב״ם, ירושלמי יומי, תהילים און שנים מקרא רעכענען זיך אליין אויס. דו קענסט אויך צולייגן דיינע אייגענע: א נומערן־סדר, א ליסטע, אדער א שטענדיגע שורה.</li>
+    <li><b>ענדער</b> דעם טיטל, די פארב און די גרייס פון בלאט.</li>
+    <li>דריק <b>„דרוק / PDF“</b>. אין דעם פענסטער וואס עפענט זיך קענסטו אויסקלייבן „שפיכער אלס PDF“.</li>
+    <li><b>„היט אפ אלס בילד“</b> מאכט א בילד־פייל (PNG) צום שיקן אויפן טעלעפאן. <b>„קאפיר לינק“</b> מאכט א לינק מיט אלע דיינע ברירות.</li>
+  </ol>
+  <p class="note">אלע חשבונות גייען פאר אין דיין בראוזער — גארנישט ווערט אפגעשיקט. די יום־טוב טעג גייען לויט חוץ־לארץ (צוויי טעג). דיינע ברירות בלייבן געשפיכערט אין דעם בראוזער.</p>
+  <div class="acts"><button class="btn pri" type="button" id="helpOk">פארשטאנען</button></div>
+</div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<style id="pageStyle"></style>
+<script src="js/calendar.js"></script>
+<script src="js/data/mishna-berura.js"></script>
+<script src="js/data/dirshu-tests-5787.js"></script>
+<script src="js/learning.js"></script>
+<script src="js/state.js"></script>
+<script src="js/sheet.js"></script>
+<script src="js/sheet-classic.js"></script>
+<script src="js/netcheck.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
