@@ -47,3 +47,7 @@ The חובות הלבבות shiur is a list of daily lines, starting 12 Oct 2026
 ## Project dedication
 
 Every sheet carries a small line at the bottom: **לע״נ אסתר בילא ע״ה בת יבלחט״א מו״ה שמשון צבי ני״ו** (`PROJECT_DED` in `js/state.js`). It is on by default. Turning it off (under 03 אויסזען) asks first; it comes back on after “ווידער פון אנהייב”, when the page is opened from a shared link, and when saved settings are upgraded to a new version.
+
+## Releasing a change
+
+GitHub Pages lets browsers keep each file for about 10 minutes, so a new `index.html` could otherwise run with an old cached script. Every stylesheet and script link in `index.html` ends in `?v=N`: when you change any CSS or JS file, raise that number everywhere (for example `sed -i 's/?v=2"/?v=3"/g' index.html`).
