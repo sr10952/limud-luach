@@ -50,4 +50,4 @@ Every sheet carries a small line at the bottom: **לע״נ אסתר בילא ע�
 
 ## Releasing a change
 
-GitHub Pages lets browsers keep each file for about 10 minutes, so a new `index.html` could otherwise run with an old cached script. Every stylesheet and script link in `index.html` ends in `?v=N`: when you change any CSS or JS file, raise that number everywhere (for example `sed -i 's/?v=2"/?v=3"/g' index.html`).
+GitHub Pages lets browsers keep each file for about 10 minutes, so a new `index.html` could otherwise run with an old cached script. Every stylesheet and script link in `index.html` ends in `?v=N`: when you change any CSS or JS file, raise that number everywhere (for example `sed -i 's/?v=3"/?v=4"/g' index.html`).
