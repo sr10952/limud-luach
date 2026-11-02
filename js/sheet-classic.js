@@ -9,7 +9,7 @@ function kColors(){const names=orderKeys().map(limName);
 function kZm(t){const z=zmData(t),o=[];if(z.c)o.push(['הדלקת נרות '+z.c,0]);if(z.h)o.push([(wday(t)===6?'מוצאי שבת ':'מוצאי יום טוב ')+z.h,0]);if(z.n)o.push(['נץ '+z.n,1]);if(z.s)o.push(['שקיעה '+z.s,1]);return o;}
 const kZmHtml=t=>kZm(t).map(([s,sk])=>`<div class="k-zm${sk?' sk':''}">${esc(s)}</div>`).join('');
 function kHead(sub,sub2){return `<div class="k-top"><div class="k-bh">בס״ד</div>${S.shul?`<div class="k-shul">${esc(S.shul)}</div>`:''}<h1 class="k-title">${esc(S.title||'')}</h1>${sub?`<div class="k-sub">${esc(sub)}</div>`:''}${sub2?`<div class="k-sub2">${esc(sub2)}</div>`:''}<div class="k-div"><i></i></div></div>`;}
-const kFoot=()=>S.foot?`<div class="k-foot">${esc(S.foot)}</div>`:'';
+const kFoot=()=>(S.foot||S.ded)?`<div class="k-foot">${S.foot?`<div>${esc(S.foot)}</div>`:''}${S.ded?`<div class="k-ded">${esc(PROJECT_DED)}</div>`:''}</div>`:'';
 
 function kMonth(t){
   const first=monthFirst(t),len=monthLen(first),lead=wday(first),rows=Math.ceil((lead+len)/7);

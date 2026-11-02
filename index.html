@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>לימוד־לוח · מאך דיר א לימוד־לוח צום דרוקן</title>
-<meta name="description" content="מאך דיר א שיינעם לימוד־לוח: דף היומי, עמוד היומי, משנה ברורה, רמב״ם, ירושלמי יומי, תהילים, שנים מקרא און דיינע אייגענע לימודים — צום דרוקן אדער אפהיטן אלס בילד.">
+<meta name="description" content="מאך דיר א שיינעם לימוד־לוח: דף היומי, עמוד היומי, משנה ברורה, רמב״ם, ירושלמי יומי, תהילים, שנים מקרא און דיינע אייגענע לימודים — צום דרוקן אדער אראפנעמען אלס PDF.">
 <meta name="theme-color" content="#f3f1ec">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/fonts.css">
@@ -25,12 +25,19 @@
 <section class="hero"><div class="wrap">
   <span class="eyebrow">לימוד־לוח · צום דרוקן און אויפהענגען</span>
   <h1>דער לימוד־לוח פאר׳ן <em>בית המדרש</em></h1>
-  <p>קלייב אויס וואס מען לערנט, די תקופה און דעם דאטום — דער לוח שטעלט זיך אויף אליין, מיט די זמנים. דרוק אים אויס פון 8½×11 ביז א גרויסן פלאקאט, אדער היט אים אפ אלס PDF אדער בילד.</p>
+  <p>קלייב אויס וואס מען לערנט, די תקופה און דעם דאטום — דער לוח שטעלט זיך אויף אליין, מיט די זמנים. נעם אראפ א PDF פון 8½×11 ביז א גרויסן פלאקאט.</p>
+  <ol class="steps" aria-label="דריי טריט"><li><b>1</b>קלייב די תקופה</li><li><b>2</b>מאך א צייכן ביי די לימודים</li><li><b>3</b>נעם אראפ דעם PDF</li></ol>
   <div class="rule"></div>
 </div></section>
 
 <main class="wrap app">
   <aside class="panel" aria-label="ברירות">
+    <nav class="tabs" id="tabs" role="tablist" aria-label="אפטיילונגען">
+      <button type="button" role="tab" data-tab="c1" aria-controls="c1"><span class="num">01</span>תקופה</button>
+      <button type="button" role="tab" data-tab="c2" aria-controls="c2"><span class="num">02</span>לימודים<i class="cnt" id="tabCnt"></i></button>
+      <button type="button" role="tab" data-tab="c3" aria-controls="c3"><span class="num">03</span>אויסזען</button>
+      <button type="button" role="tab" data-tab="c4" aria-controls="c4"><span class="num">04</span>מבחנים<i class="cnt" id="tabTst"></i></button>
+    </nav>
 
     <section class="card" id="c1">
       <h2><span class="num">01</span>וועלכע תקופה?</h2>
@@ -49,9 +56,8 @@
         <button class="btn" type="button" id="navToday">היינט</button>
         <button class="btn" type="button" id="navNext"><span id="lblNext">קומענדיגער</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
       </div>
-      <label class="f" for="inPages" id="lblPages">וויפיל וואכן צו דרוקן אין איין PDF</label>
-      <input class="in" id="inPages" type="number" min="1" max="52" value="1">
-      <p class="note" style="margin-top:6px">יעדע וואך / חודש / טאג קומט אויף א באזונדער בלאט, אנגעהויבן פון דעם דאטום אויבן. ביי מער ווי איינס מאכט „דרוק / PDF“ א PDF פייל — עפן אים און דרוק.</p>
+      <p class="note" style="margin-top:12px">וויפיל בלעטער (וואכן / חדשים / טעג) עס זאל זיין אין PDF, שטעלט מען ביים „PDF“ קנעפל, אנגעהויבן פון דעם דאטום אויבן.</p>
+      <button class="btn sm next" type="button" data-go="c2">ווייטער: וואס לערנט מען? ←</button>
     </section>
 
     <section class="card" id="c2">
@@ -61,6 +67,7 @@
       <p class="note" style="margin:8px 0 0">מיט ▲▼ שטעלט מען אויס די סדר — אזוי ווי עס שטייט דא, אזוי קומט עס אויפן לוח.</p>
       <div class="sechd"><span>אן אייגענער לימוד</span><button class="btn sm gold" type="button" id="btnAdd">+ צולייגן</button></div>
       <div class="lim" id="limCus"></div>
+      <button class="btn sm next" type="button" data-go="c3">ווייטער: אויסזען ←</button>
       <p class="note" id="cusEmpty">נאך נישט צוגעלייגט. פאר משניות, מוסר, חומש, א סדר פון א ליסטע — אדער א שטענדיגע שורה ווי "שיעור ביי נאכט".</p>
     </section>
 
@@ -96,6 +103,7 @@
         <label class="tg"><span>ווייז זמנים (הדלקת נרות · מוצאי שבת)</span><input type="checkbox" id="tgZman"><span class="sw2"></span></label>
         <label class="tg"><span>ווייז נץ החמה יעדן טאג</span><input type="checkbox" id="tgNetz"><span class="sw2"></span></label>
         <label class="tg"><span>ווייז שקיעה יעדן טאג</span><input type="checkbox" id="tgShk"><span class="sw2"></span></label>
+        <label class="tg"><span>הקדשה פון דעם פראיעקט<small class="tgn">לע״נ אסתר בילא ע״ה בת יבלחט״א מו״ה שמשון צבי ני״ו</small></span><input type="checkbox" id="tgDed"><span class="sw2"></span></label>
       </div>
       <div id="zmBox">
         <div class="two">
@@ -117,11 +125,17 @@
   </aside>
 
   <section class="stage-col" aria-label="פארשוי">
-    <div class="toolbar">
-      <button class="btn pri" type="button" id="btnPrint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.5h10V9M7 17.5H4.5V10.5h15v7H17M7 14.5h10v6H7z"/></svg>דרוק / PDF</button>
-      <button class="btn" type="button" id="btnPng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>היט אפ אלס בילד</button>
-      <button class="btn" type="button" id="btnLink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>קאפיר לינק</button>
-      <span class="sp"></span>
+    <div class="dock" id="dock">
+      <div class="dock-sum"><b id="sumMain"></b><span id="sumSub"></span></div>
+      <div class="dock-row">
+        <label class="pg"><span id="lblPages">וואכן</span><span class="step"><button type="button" class="ib" id="pgMinus" aria-label="ווייניגער">−</button><input id="inPages" type="number" min="1" max="52" value="1" inputmode="numeric" aria-describedby="lblPages"><button type="button" class="ib" id="pgPlus" aria-label="מער">+</button></span></label>
+        <label class="ql"><span>קוואליטעט</span><select id="inQual"><option value="draft">שנעל · קליינער פייל</option><option value="high">גוט</option><option value="ultra">בעסטע · גרויסער פייל</option></select></label>
+        <span class="sp"></span>
+        <button class="btn pri big" type="button" id="btnPdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5M4.5 16.5v3h15v-3"/></svg><span id="lblPdf">נעם אראפ PDF</span></button>
+        <button class="btn" type="button" id="btnPrint" title="דרוק גלייך פון בראוזער"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.5h10V9M7 17.5H4.5V10.5h15v7H17M7 14.5h10v6H7z"/></svg>דרוק</button>
+        <button class="btn" type="button" id="btnLink" title="קאפיר א לינק מיט אלע ברירות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="hide-s">לינק</span></button>
+      </div>
+      <div class="prog" id="prog" hidden><div class="bar"><i id="progBar"></i></div><span id="progLbl"></span><button type="button" class="btn sm" id="progStop">אפשטעלן</button></div>
     </div>
     <div class="stage" id="stage"><div class="stage-wrap" id="stageWrap"><div class="stage-inner" id="stageInner"></div></div></div>
     <p class="hint" id="hint">קוק איבער אלעס איידער דו דרוקסט — דפים, זמנים און דאטומס. דער טאג ענדערט זיך ביי האלבע נאכט, נישט ביי שקיעה.</p>
@@ -130,7 +144,7 @@
 
 <footer class="foot"><div class="wrap"><b>בעזרת השם</b> · יעדן טאג א ביסל מער</div></footer>
 
-<div class="mbar"><button class="btn pri" type="button" id="mPrint">דרוק / PDF</button><button class="btn" type="button" id="mPng">בילד</button></div>
+<div class="mbar"><button class="btn pri" type="button" id="mPdf">נעם אראפ PDF</button><button class="btn" type="button" id="mPrev">פארשוי ↑</button></div>
 
 <dialog id="dlgItem"><form method="dialog" class="dlg" id="frmItem">
   <h3 id="dlgTitle">א נייער לימוד</h3>
@@ -209,11 +223,16 @@
     <li><b>קלייב די תקופה</b> — א טאג, א וואך, אדער א גאנצן חודש — און דעם דאטום.</li>
     <li><b>מאך א צייכן</b> ביי די לימודים. דף היומי, עמוד היומי, משנה ברורה, רמב״ם, ירושלמי יומי, תהילים און שנים מקרא רעכענען זיך אליין אויס. דו קענסט אויך צולייגן דיינע אייגענע: א נומערן־סדר, א ליסטע, אדער א שטענדיגע שורה.</li>
     <li><b>ענדער</b> דעם טיטל, די פארב און די גרייס פון בלאט.</li>
-    <li>דריק <b>„דרוק / PDF“</b>. אין דעם פענסטער וואס עפענט זיך קענסטו אויסקלייבן „שפיכער אלס PDF“.</li>
-    <li><b>„היט אפ אלס בילד“</b> מאכט א בילד־פייל (PNG) צום שיקן אויפן טעלעפאן. <b>„קאפיר לינק“</b> מאכט א לינק מיט אלע דיינע ברירות.</li>
+    <li>שטעל אויס <b>וויפיל בלעטער</b> און די <b>קוואליטעט</b>, און דריק <b>„נעם אראפ PDF“</b>. דער PDF ווערט געמאכט אינעם בראוזער, יעדער בלאט אין דער ריכטיגער גרייס — עפן אים און דרוק.</li>
+    <li><b>„דרוק“</b> עפנט דעם בראוזער'ס דרוק־פענסטער פאר דעם בלאט וואס דו זעסט. <b>„לינק“</b> מאכט א לינק מיט אלע דיינע ברירות.</li>
   </ol>
   <p class="note">אלע חשבונות גייען פאר אין דיין בראוזער — גארנישט ווערט אפגעשיקט. די יום־טוב טעג גייען לויט חוץ־לארץ (צוויי טעג). דיינע ברירות בלייבן געשפיכערט אין דעם בראוזער.</p>
   <div class="acts"><button class="btn pri" type="button" id="helpOk">פארשטאנען</button></div>
+</div></dialog>
+<dialog id="dlgConfirm"><div class="dlg">
+  <h3 id="cfTitle">זיכער?</h3>
+  <p id="cfText"></p>
+  <div class="acts"><button class="btn danger" type="button" id="cfYes">יא, נעם אראפ</button><button class="btn pri" type="button" id="cfNo">ניין, לאז עס</button></div>
 </div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 <style id="pageStyle"></style>
