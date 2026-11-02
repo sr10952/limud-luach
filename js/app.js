@@ -3,7 +3,8 @@ function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clea
 const D1=n=>n.replace('זונטאג','א׳').replace('מאנטאג','ב׳').replace('דינסטאג','ג׳').replace('מיטוואך','ד׳').replace('דאנערשטאג','ה׳').replace('פרייטאג','ו׳').replace('שבת','ש׳');
 function sync(){
   $$('#segView button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===S.view)));
-  $('#inDate').value=S.date;$('#inPages').value=S.pages||1;$('#lblPages').textContent={day:'וויפיל טעג',week:'וויפיל וואכן',month:'וויפיל חדשים',tests:'וויפיל בלעטער'}[S.view]+' צו דרוקן אין איין PDF';
+  $('#inDate').value=S.date;$('#inPages').value=S.pages||1;$('#lblPages').textContent={day:'טעג',week:'וואכן',month:'חדשים',tests:'בלעטער'}[S.view];
+  $('#inQual').value=QUALITIES[S.quality]?S.quality:'high';$('#tgDed').checked=S.ded!==false;
   const t=fromIso(S.date);$('#hdLabel').textContent=hebDateY(t);$('#hdNote').textContent=WD[wday(t)]+' · '+gregFull(t);
   const nm={day:['נעכטן','מארגן'],week:['פריערדיגע וואך','קומענדיגע וואך'],month:['פריערדיגער חודש','קומענדיגער חודש'],tests:['פריערדיגע מבחנים','קומענדיגע מבחנים']}[S.view];
   $('#lblPrev').textContent=nm[0];$('#lblNext').textContent=nm[1];
@@ -11,7 +12,38 @@ function sync(){
   $$('#swTheme .sw').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===S.theme)));
   $('#tgGreg').checked=S.greg;$('#tgHol').checked=S.hol;$('#tgZman').checked=S.zman;$('#tgShk').checked=S.shk;
   $$('#limStd input[data-k]').forEach(i=>i.checked=!!S.on[i.dataset.k]);
+  dockSum();
 }
+/* the line above the PDF button: what will be made */
+const PAPERN={tab:'11×17',letter:'8.5×11',a4:'A4',a3:'A3',p18:'18×24',p24:'24×36'};
+function dockSum(){const n=pageCount(),D=dims(),t=fromIso(S.date);
+  const what={day:'טאג',week:'וואך',month:'חודש',tests:'מבחנים'}[S.view];
+  const nLim=STDK.filter(k=>S.on[k]).length+S.custom.filter(c=>c.on&&!c.todo).length;
+  const from=S.view==='month'?(()=>{const h=hp(monthFirst(t));return HM[h.m]+' '+hebYear(h.y);})():hebDate(t);
+  $('#sumMain').textContent=(n>1?n+' בלעטער · ':'')+what+' · '+from;
+  $('#sumSub').textContent=nLim+' לימודים · '+(PAPERN[S.paper]||'')+' '+(D.land?'ליגנדיג':'שטייענדיג');
+  $('#lblPdf').textContent=n>1?'נעם אראפ PDF ('+n+')':'נעם אראפ PDF';
+  const tc=$('#tabCnt');if(tc)tc.textContent=nLim||'';
+  const up=S.tests.filter(x=>x.date&&x.date>=todayIso()).length,tt=$('#tabTst');if(tt)tt.textContent=up||'';}
+
+/* ---- tabs: one section of the controls at a time ---- */
+const TABK='limud-luach.tab';
+function showTab(id,focus){if(!$('#'+id))id='c1';
+  $$('#tabs [role=tab]').forEach(b=>{const on=b.dataset.tab===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus();});
+  $$('.panel > .card').forEach(c=>c.hidden=c.id!==id);try{localStorage.setItem(TABK,id);}catch(e){}}
+$$('#tabs [role=tab]').forEach(b=>{b.addEventListener('click',()=>showTab(b.dataset.tab));
+  b.addEventListener('keydown',e=>{const ts=$$('#tabs [role=tab]'),i=ts.indexOf(b);let j=-1;
+    if(e.key==='ArrowLeft')j=(i+1)%ts.length;else if(e.key==='ArrowRight')j=(i-1+ts.length)%ts.length;else if(e.key==='Home')j=0;else if(e.key==='End')j=ts.length-1;
+    if(j>=0){e.preventDefault();showTab(ts[j].dataset.tab,true);}});});
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.go);$('#tabs').scrollIntoView({block:'nearest',behavior:'smooth'});}));
+(()=>{let t='c1';try{t=localStorage.getItem(TABK)||'c1';}catch(e){}showTab(t);})();
+
+/* ---- a yes/no question in a real dialog (keyboard and screen-reader friendly) ---- */
+function confirmDialog(title,text){const d=$('#dlgConfirm');$('#cfTitle').textContent=title;$('#cfText').textContent=text;
+  return new Promise(res=>{const done=v=>{d.removeEventListener('close',onClose);$('#cfYes').onclick=$('#cfNo').onclick=null;if(d.open)d.close();res(v);};
+    const onClose=()=>done(false);d.addEventListener('close',onClose);
+    $('#cfYes').onclick=()=>done(true);$('#cfNo').onclick=()=>done(false);
+    if(d.showModal)d.showModal();else d.setAttribute('open','');setTimeout(()=>$('#cfNo').focus(),30);});}
 const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const ARR=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d<0?'M6 15l6-6 6 6':'M6 9l6 6 6-6'}"/></svg>`;
 const ICO_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
@@ -65,20 +97,33 @@ $('#frmItem').addEventListener('submit',e=>{e.preventDefault();const wasTodo=edi
   save();buildCus();render();dlg.close();});
 $('#btnAdd').addEventListener('click',()=>openItem(-1));
 
-/* ---- tests ---- */
-function buildTests(){const box=$('#tstList');
-  box.innerHTML=S.tests.map((x,i)=>`<div class="tst" data-i="${i}"><div class="two">
+/* ---- tests: upcoming ones first; each row opens to edit it; past ones are tucked away ---- */
+const tOpen=new WeakSet();let tPast=false,tAll=false;const TSHOW=6;
+function tLine(x){const n=x.ty==='oth'?(x.name||'מבחן'):TTY[x.ty];const m=testMat(x);return [n,m];}
+function buildTests(){const box=$('#tstList'),today=todayIso();
+  const idx=S.tests.map((x,i)=>i).sort((p,q)=>{const a=S.tests[p].date||'9999',b=S.tests[q].date||'9999';return a<b?-1:a>b?1:p-q;});
+  const past=idx.filter(i=>S.tests[i].date&&S.tests[i].date<today),up=idx.filter(i=>!past.includes(i));
+  const row=i=>{const x=S.tests[i],[nm,mat]=tLine(x),t=x.date?fromIso(x.date):0;
+    return `<details class="tst" data-i="${i}"${tOpen.has(x)?' open':''}><summary><span class="td">${t?`<b>${hebDate(t)}</b><small>${WD[wday(t)]} · ${gregShort(t)}</small>`:'<b>—</b>'}</span><span class="tn"><b>${esc(nm)}</b>${mat?`<small>${esc(mat)}</small>`:''}</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="two">
     <div><label class="f">לימוד</label><select class="in" data-f="ty">${Object.entries(TTY).map(([k,v])=>`<option value="${k}"${x.ty===k?' selected':''}>${v}</option>`).join('')}</select></div>
     <div><label class="f">דאטום פון מבחן</label><input class="in" type="date" data-f="date" value="${esc(x.date||'')}"></div>
     ${x.ty==='oth'?`<div><label class="f">נאמען</label><input class="in" data-f="name" maxlength="30" value="${esc(x.name||'')}" placeholder="למשל: מבחן חודשי"></div>`:`<div><label class="f">חומר פון</label><input class="in" type="date" data-f="from" value="${esc(x.from||'')}"></div>`}
     <div><label class="f">חומר${x.ty==='oth'?'':' <span style="font-weight:400;color:var(--muted)">(ליידיג = אויטאמאטיש)</span>'}</label><input class="in" data-f="text" maxlength="60" value="${esc(x.text||'')}" placeholder="${esc(x.ty==='oth'?'':testMat(Object.assign({},x,{text:''})))}"></div>
-  </div><div class="acts2"><button class="btn sm danger" type="button" data-tdel>אראפנעמען</button></div></div>`).join('');
-  $$('.tst',box).forEach(row=>{const x=S.tests[+row.dataset.i];
-    $$('[data-f]',row).forEach(el=>el.addEventListener(el.dataset.f==='text'||el.dataset.f==='name'?'input':'change',()=>{x[el.dataset.f]=el.value;save();render();if(!['text','name'].includes(el.dataset.f))buildTests();}));
-    $('[data-tdel]',row).addEventListener('click',()=>{S.tests.splice(+row.dataset.i,1);save();buildTests();render();});});}
+  </div><div class="acts2"><button class="btn sm danger" type="button" data-tdel>אראפנעמען</button></div></details>`;};
+  const upShow=tAll?up:up.filter((i,k)=>k<TSHOW||tOpen.has(S.tests[i]));
+  box.innerHTML=(up.length?upShow.map(row).join(''):'<p class="note">קיין קומענדיגע מבחנים. דריק „+ א מבחן“.</p>')
+    +(up.length>TSHOW?`<button type="button" class="btn sm ghostbtn" id="tAllBtn" aria-expanded="${tAll}">${tAll?'ווייז נאר די ערשטע '+TSHOW:'ווייז אלע קומענדיגע מבחנים ('+up.length+')'}</button>`:'')
+    +(past.length?`<button type="button" class="btn sm ghostbtn" id="tPastBtn" aria-expanded="${tPast}">${tPast?'באהאלט':'ווייז'} די פריערדיגע מבחנים (${past.length})</button>`+(tPast?`<div class="tpast">${past.slice().reverse().map(row).join('')}</div>`:''):'');
+  const ab=$('#tAllBtn');if(ab)ab.addEventListener('click',()=>{tAll=!tAll;buildTests();});
+  const pb=$('#tPastBtn');if(pb)pb.addEventListener('click',()=>{tPast=!tPast;buildTests();});
+  $$('.tst',box).forEach(el=>{const x=S.tests[+el.dataset.i];
+    el.addEventListener('toggle',()=>{if(el.open)tOpen.add(x);else tOpen.delete(x);});
+    $$('[data-f]',el).forEach(f=>f.addEventListener(f.dataset.f==='text'||f.dataset.f==='name'?'input':'change',()=>{x[f.dataset.f]=f.value;save();render();dockSum();
+      if(!['text','name'].includes(f.dataset.f))buildTests();else{const [nm,mat]=tLine(x);const tn=$('.tn',el);tn.innerHTML=`<b>${esc(nm)}</b>${mat?`<small>${esc(mat)}</small>`:''}`;}}));
+    $('[data-tdel]',el).addEventListener('click',()=>{S.tests.splice(+el.dataset.i,1);save();buildTests();render();dockSum();});});}
 $('#btnTest').addEventListener('click',()=>{let d=fromIso(todayIso());do d+=DAY;while(wday(d)!==0);
   const prev=S.tests.filter(x=>x.ty==='ayd'&&x.date&&x.date<iso(d)).map(x=>x.date).sort().pop();
-  S.tests.push({ty:'ayd',date:iso(d),from:prev||iso(d-28*DAY),name:'',text:''});save();buildTests();render();});
+  const x={ty:'ayd',date:iso(d),from:prev||iso(d-28*DAY),name:'',text:''};tOpen.add(x);S.tests.push(x);save();buildTests();render();dockSum();});
 
 /* ---- navigation ---- */
 function shift(dir){const t=fromIso(S.date);let n;
@@ -89,7 +134,14 @@ function shift(dir){const t=fromIso(S.date);let n;
   S.date=iso(n);save();sync();render();}
 $('#navPrev').addEventListener('click',()=>shift(-1));$('#navNext').addEventListener('click',()=>shift(1));
 $('#navToday').addEventListener('click',()=>{S.date=todayIso();save();sync();render();});
-$('#inPages').addEventListener('change',e=>{S.pages=Math.max(1,Math.min(52,parseInt(e.target.value)||1));save();sync();});
+const setPages=v=>{S.pages=Math.max(1,Math.min(52,parseInt(v)||1));save();sync();};
+$('#inPages').addEventListener('change',e=>setPages(e.target.value));
+$('#pgMinus').addEventListener('click',()=>setPages((S.pages||1)-1));$('#pgPlus').addEventListener('click',()=>setPages((S.pages||1)+1));
+$('#inQual').addEventListener('change',e=>{S.quality=e.target.value;save();});
+$('#tgDed').addEventListener('change',async e=>{if(!e.target.checked){e.target.checked=true;
+    const ok=await confirmDialog('אראפנעמען די הקדשה?','די שורה „'+PROJECT_DED+'“ שטייט קליין אונטן אויף יעדן בלאט. ביסטו זיכער אז דו ווילסט זי אראפנעמען?');
+    if(!ok)return;e.target.checked=false;}
+  S.ded=e.target.checked;save();render();});
 $('#inDate').addEventListener('change',e=>{if(/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)){S.date=e.target.value;save();sync();render();}});
 $$('#segView button').forEach(b=>b.addEventListener('click',()=>{S.view=b.dataset.v;save();sync();render();}));
 $('#inShul').addEventListener('input',e=>{S.shul=e.target.value;save();render();});
@@ -110,41 +162,56 @@ function stepDate(iso0,k){let t=fromIso(iso0);if(S.view==='day')return iso(t+k*D
   if(S.view==='tests'){for(let i=0;i<k;i++){const g=testGroups(t).slice(0,TESTS_PER_PAGE);if(!g.length)break;t=fromIso(g[g.length-1].date)+DAY;}return iso(t);}
   t=monthFirst(t);for(let i=0;i<k;i++)t+=monthLen(t)*DAY;return iso(t);}
 const H2C='vendor/html2canvas.min.js',JSPDF='vendor/jspdf.umd.min.js'; // served from this site, so web filters don't block them
-const h2cOpts=scale=>({scale,backgroundColor:null,useCORS:true,logging:false,onclone:d=>{const i=d.getElementById('stageInner'),w=d.getElementById('stageWrap');if(i){i.style.transform='none';i.style.position='static';}if(w){w.style.width='auto';w.style.height='auto';}}});
-function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
-/* Several pages: build the PDF file here, one sheet per page at the exact paper size.
-   (The browser print dialog may force landscape paper, which splits each sheet over two pages.) */
-async function makePdf(n){const d0=S.date;if(S.view==='tests')n=Math.max(1,Math.min(n,Math.ceil(testGroups(fromIso(d0)).length/TESTS_PER_PAGE))); // no empty pagestoast('מאך א PDF…');
-  try{for(let k=0;k<n;k++){S.date=stepDate(d0,k);const [a,b]=viewRange();ensureZm(a,b);}S.date=d0;await zmReady();
+/* PDF quality: dots per inch on paper. Big posters are capped so the picture of each page stays
+   within what phones (iOS Safari: ~16.7 million pixels per canvas) can draw. */
+const QUALITIES={draft:{dpi:150,q:.88},high:{dpi:220,q:.92},ultra:{dpi:300,q:.95}};
+const MAXPX=16e6;
+const h2cOpts=(scale,D)=>({scale,backgroundColor:'#ffffff',useCORS:true,logging:false,width:D.W,height:D.H,windowWidth:D.W,windowHeight:D.H,
+  onclone:d=>{const i=d.getElementById('stageInner'),w=d.getElementById('stageWrap');if(i){i.style.transform='none';i.style.position='static';}if(w){w.style.width='auto';w.style.height='auto';}}});
+function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},4000);}
+function pageCount(){let n=Math.max(1,Math.min(52,parseInt(S.pages)||1));
+  if(S.view==='tests')n=Math.max(1,Math.min(n,Math.ceil(testGroups(fromIso(S.date)).length/TESTS_PER_PAGE))); // no empty pages
+  return n;}
+let busy=false,stopReq=false;
+function progress(on,done,total,label){const p=$('#prog');p.hidden=!on;$('#dock').classList.toggle('busy',on);
+  ['#btnPdf','#mPdf','#btnPrint'].forEach(s=>{const b=$(s);if(b)b.disabled=on;});
+  if(on){$('#progBar').style.width=(total?Math.round(100*done/total):0)+'%';$('#progLbl').textContent=label||'';}}
+/* The PDF is made right here in the browser (nothing is sent anywhere): every sheet is drawn by the
+   browser itself (html2canvas), so the Hebrew, the fonts and the layout look exactly like the preview,
+   then put on its own PDF page at the exact paper size (jsPDF). The same way as the mishna-generator. */
+async function makePdf(){if(busy)return;busy=true;stopReq=false;const d0=S.date,n=pageCount(),Q=QUALITIES[S.quality]||QUALITIES.high;
+  progress(true,0,n,'גרייט זיך…');
+  try{for(let k=0;k<n;k++){S.date=stepDate(d0,k);const [a,b]=viewRange();ensureZm(a,b);}S.date=d0;
+    progress(true,0,n,'לאדט די זמנים…');await zmReady();
     await loadScript(H2C);await loadScript(JSPDF);if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-    const D=dims(),o=D.land?'landscape':'portrait',sc=Math.max(2,Math.min(3.5,Math.max(D.inW,D.inH)*200/D.W));
+    if(!window.jspdf||!window.html2canvas)throw new Error('lib');
+    const D=dims(),o=D.land?'landscape':'portrait';
+    const sc=Math.max(1,Math.min(Q.dpi*D.inW/D.W,Math.sqrt(MAXPX/(D.W*D.H))));
     const pdf=new window.jspdf.jsPDF({orientation:o,unit:'in',format:[D.inW,D.inH],compress:true});
-    for(let k=0;k<n;k++){S.date=stepDate(d0,k);render();toast('מאך א PDF… '+(k+1)+' / '+n);
-      const c=await html2canvas($('.sheet'),h2cOpts(sc));if(k)pdf.addPage([D.inW,D.inH],o);
-      pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',0,0,D.inW,D.inH,undefined,'FAST');}
-    download(pdf.output('blob'),'limud-luach-'+S.view+'-'+d0+'-'+n+'.pdf');toast('דער PDF איז געשפיכערט ✓ — עפן אים און דרוק');}
-  catch(e){toast('דער PDF־מאכער גייט נישט — פרוביר נאכאמאל');}
-  finally{S.date=d0;render();}}
-async function doPrint(){const n=Math.max(1,Math.min(52,parseInt(S.pages)||1));
-  if(S.view==='tests')n=Math.max(1,Math.min(n,Math.ceil(testGroups(fromIso(S.date)).length/TESTS_PER_PAGE)));
-  if(n>1)return makePdf(n);
-  toast('גרייט צו דרוקן…');await zmReady();render();setTimeout(()=>window.print(),120);}
-$('#btnPrint').addEventListener('click',doPrint);$('#mPrint').addEventListener('click',doPrint);
+    pdf.setProperties({title:(S.title||'לימוד־לוח'),subject:PROJECT_DED,creator:'לימוד־לוח'});
+    for(let k=0;k<n;k++){if(stopReq)throw new Error('stop');
+      S.date=stepDate(d0,k);render();progress(true,k,n,'בלאט '+(k+1)+' פון '+n+'…');
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))); // let the bar paint
+      const c=await html2canvas($('.sheet'),h2cOpts(sc,D));if(k)pdf.addPage([D.inW,D.inH],o);
+      pdf.addImage(c.toDataURL('image/jpeg',Q.q),'JPEG',0,0,D.inW,D.inH,undefined,'FAST');c.width=c.height=0;}
+    progress(true,n,n,'שפיכערט…');
+    download(pdf.output('blob'),'limud-luach-'+S.view+'-'+d0+(n>1?'-x'+n:'')+'.pdf');toast('דער PDF איז אראפגענומען ✓ — עפן אים און דרוק');}
+  catch(e){toast(e&&e.message==='stop'?'אפגעשטעלט':'דער PDF־מאכער גייט נישט — פרוביר נאכאמאל, אדער נוץ „דרוק“');}
+  finally{S.date=d0;render();progress(false);busy=false;}}
+$('#progStop').addEventListener('click',()=>{stopReq=true;});
+/* the browser's own print dialog, for the sheet on screen (vector text, smallest file) */
+async function doPrint(){toast('גרייט צו דרוקן…');await zmReady();render();setTimeout(()=>window.print(),120);}
+$('#btnPdf').addEventListener('click',makePdf);$('#mPdf').addEventListener('click',makePdf);
+$('#btnPrint').addEventListener('click',doPrint);
+$('#mPrev').addEventListener('click',()=>$('#stage').scrollIntoView({behavior:'smooth',block:'start'}));
 const LOADED=new Set();
 function loadScript(src){return new Promise((res,rej)=>{if(LOADED.has(src))return res();const s=document.createElement('script');s.src=src;s.onload=()=>{LOADED.add(src);res();};s.onerror=rej;document.head.appendChild(s);});}
-async function savePng(){toast('מאך א בילד…');
-  try{await zmReady();render();await loadScript(H2C);
-    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-    const el=$('.sheet');const c=await html2canvas(el,{scale:3,backgroundColor:null,useCORS:true,logging:false,onclone:d=>{const i=d.getElementById('stageInner'),w=d.getElementById('stageWrap');if(i){i.style.transform='none';i.style.position='static';}if(w){w.style.width='auto';w.style.height='auto';}}});
-    c.toBlob(b=>{if(!b){toast('נישט געגאנגען — נוץ „דרוק / PDF“');return;}const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`limud-luach-${S.view}-${S.date}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);toast('דער בילד איז געשפיכערט ✓');},'image/png');
-  }catch(e){toast('דער בילד־מאכער גייט נישט — נוץ „דרוק / PDF“');}}
-$('#btnPng').addEventListener('click',savePng);$('#mPng').addEventListener('click',savePng);
 $('#btnLink').addEventListener('click',async()=>{const j=JSON.stringify(S);const h='#s='+encodeURIComponent(btoa(unescape(encodeURIComponent(j))));const u=location.href.split('#')[0]+h;
   try{await navigator.clipboard.writeText(u);toast('דער לינק איז קאפירט ✓');}catch(e){try{history.replaceState(null,'',h);}catch(_){}prompt('קאפיר דעם לינק:',u);}});
 let rs=0;$('#btnReset').addEventListener('click',e=>{const b=e.currentTarget;if(!rs){rs=1;b.textContent='זיכער? דריק נאכאמאל';setTimeout(()=>{rs=0;b.textContent='ווידער פון אנהייב';},3000);return;}
   rs=0;b.textContent='ווידער פון אנהייב';store.del();S=DEF();try{history.replaceState(null,'',location.pathname);}catch(_){}sync();buildCus();buildTests();render();toast('אלעס איז צוריקגעשטעלט');});
 const hd=$('#dlgHelp');$('#btnHelp').addEventListener('click',()=>hd.showModal?hd.showModal():hd.setAttribute('open',''));$('#helpOk').addEventListener('click',()=>hd.close());
-[dlg,hd].forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close();}));
+[dlg,hd,$('#dlgConfirm')].forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close();}));
 
 /* ---- init ---- */
 buildLim();buildTests();sync();render();

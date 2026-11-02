@@ -38,6 +38,8 @@ function migrate(s){if((s.v||1)<2)s=migrateV2(s);
     s.style='classic';s.v=Math.max(s.v||1,4);}
   /* v5: חובות הלבבות with its real schedule (keeps the user's own if they already set one up) */
   if((s.v||1)<5){const i=s.custom.findIndex(c=>c.pid==='chv');if(i<0)s.custom.push(CHOVOS());else if(s.custom[i].todo||!s.custom[i].from)s.custom[i]=CHOVOS();s.v=5;}
+  /* v6: the project dedication is shown again (it is on by default; it can be turned off on the page) */
+  if((s.v||1)<6){s.ded=true;s.v=6;}
   return s;}
 function migrateV2(s){const P=PRESETS();
   const i=s.custom.findIndex(c=>c.pid==='mm1'||(c.type==='amud'&&c.name==='מאמר מרדכי'));
@@ -46,7 +48,10 @@ function migrateV2(s){const P=PRESETS();
   if(!s.custom.some(c=>c.pid==='chl'))s.custom.push(P.find(c=>c.pid==='chl'));
   const mmt=PRESET_TESTS()[0];if(!s.tests.some(y=>y.date===mmt.date&&y.name===mmt.name))s.tests.push(mmt);
   s.v=2;return s;}
-const DEF=()=>({view:'month',date:todayIso(),on:{daf:true,ayd:true,mb:true,r3:false,r1:false,yer:false,teh:false,par:true,shn:false},v:5,style:'classic',order:null,custom:PRESETS(),tests:PRESET_TESTS(),shul:'',title:'לימוד־לוח',sub:'',foot:'',theme:'parchment',paper:'tab',orient:'auto',pages:1,netz:false,greg:true,hol:true,zman:true,shk:true,cm:30,hm:56,zip:'10952'});
+/* the project dedication, printed small at the bottom of every sheet. On by default; turning it off asks first,
+   and it comes back on for a shared link, after "ווידער פון אנהייב", and when a new version of the site needs it. */
+const PROJECT_DED='לע״נ אסתר בילא ע״ה בת יבלחט״א מו״ה שמשון צבי ני״ו';
+const DEF=()=>({view:'month',date:todayIso(),on:{daf:true,ayd:true,mb:true,r3:false,r1:false,yer:false,teh:false,par:true,shn:false},v:6,ded:true,quality:'high',style:'classic',order:null,custom:PRESETS(),tests:PRESET_TESTS(),shul:'',title:'לימוד־לוח',sub:'',foot:'',theme:'parchment',paper:'tab',orient:'auto',pages:1,netz:false,greg:true,hol:true,zman:true,shk:true,cm:30,hm:56,zip:'10952'});
 const STD=[{k:'daf',t:'דף היומי',d:'גמרא בבלי · דער טעגליכער בלאט'},{k:'ayd',t:'עמוד היומי – דרשו',d:'א עמוד גמרא יעדן טאג'},{k:'mb',t:'משנה ברורה – דרשו',d:'דף היומי בהלכה · פרייטאג און שבת חזרה'},{k:'r3',t:'רמב״ם · ג׳ פרקים',d:'די נייע מחזור פון ט״ז שבט תשפ״ו'},{k:'r1',t:'רמב״ם · פרק אחד',d:'די נייע מחזור פון ט״ז שבט תשפ״ו'},{k:'yer',t:'ירושלמי יומי',d:'תלמוד ירושלמי · לויט די ווילנער דפים'},{k:'teh',t:'תהילים',d:'תהילים לויט די טעג פון חודש'},{k:'par',t:'פרשת השבוע',d:'די סדרה פון דער וואך'},{k:'shn',t:'שנים מקרא',d:'די סדרה פון דער וואך, א עליה יעדן טאג'}];
 const STDK=['daf','ayd','mb','r3','r1','yer','teh','shn'];
 const STDC={ayd:'var(--acc)',mb:'var(--acc)',r3:'var(--acc)',r1:'var(--acc)'};
@@ -54,9 +59,11 @@ const LS='limud-luach.v1';
 const store={get(){try{return localStorage.getItem(LS);}catch(e){return null;}},set(v){try{localStorage.setItem(LS,v);}catch(e){}},del(){try{localStorage.removeItem(LS);}catch(e){}}};
 function loadState(){let s=DEF();let raw=null;
   try{const m=location.hash.match(/[#&]s=([^&]+)/);if(m){raw=decodeURIComponent(escape(atob(decodeURIComponent(m[1]))));}}catch(e){raw=null;}
+  const fromLink=!!raw;
   if(!raw)raw=store.get();
   if(raw){try{const o=JSON.parse(raw);s=Object.assign(s,o);s.on=Object.assign(DEF().on,o.on||{});if(!Array.isArray(s.custom))s.custom=[];if(!Array.isArray(s.tests))s.tests=[];}catch(e){}}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(s.date))s.date=todayIso();
+  if(fromLink||typeof s.ded!=='boolean')s.ded=true; // a shared link always carries the dedication
   return migrate(s);}
 let S=loadState();
 function save(){store.set(JSON.stringify(S));}

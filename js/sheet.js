@@ -6,7 +6,7 @@
 function head(sub,greg){
   return `<header class="mh"><div class="mh-top"><span class="r">בס״ד</span><span class="mh-shul">${esc(S.shul||'')}</span><span class="l">${esc(greg||'')}</span></div>`
     +`<h1 class="mh-title">${esc(S.title||'')}</h1>${sub?`<div class="mh-sub">${esc(sub)}</div>`:''}<div class="mh-rule"></div></header>`;}
-function foot(){return S.foot?`<footer class="sf">${esc(S.foot)}</footer>`:'';}
+function foot(){return (S.foot||S.ded)?`<footer class="sf">${S.foot?`<div>${esc(S.foot)}</div>`:''}${S.ded?`<div class="sf-ded">${esc(PROJECT_DED)}</div>`:''}</footer>`:'';}
 const TTY={ayd:'עמוד היומי',mb:'משנה ברורה',oth:'אנדערש'};
 function testMat(x){if(x.text)return x.text;if(x.ty==='oth'||!x.date||!x.from)return '';const F=fromIso(x.from),T=fromIso(x.date)-DAY;if(T<F)return '';
   if(x.ty==='ayd'){const a=amudYomi(F),b=amudYomi(T);return amStr(a)+' – '+amStr(b,b.m!==a.m);}
@@ -99,7 +99,7 @@ function render(){
   inner.innerHTML=`<div class="sheet${S.style==='classic'?' classic':''}" data-theme="${S.theme}" style="width:${W}px;height:${H}px">${buildBody(t)}</div>`;
   fitSheet(inner,H);
   $('#pageStyle').textContent=`@page{size:${D.inW}in ${D.inH}in;margin:0}@media print{#stageWrap{width:${D.pw}px!important;height:${D.ph}px!important}#stageInner{transform:scale(${D.k})!important;position:absolute!important;top:0!important;left:0!important}}`;
-  fit();}
+  fit();if(typeof dockSum==='function')dockSum();}
 /* largest value of a CSS variable in [lo,hi] for which bad() is false (binary search) */
 function fitVar(el,name,lo,hi,unit,bad){const set=v=>el.style.setProperty(name,v.toFixed(3)+unit);
   set(hi);if(!bad())return hi;set(lo);if(bad())return lo;
